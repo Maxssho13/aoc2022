@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .max()
         .unwrap();
 
-    println!("largest: {}", largest);
+    println!("largest: {largest}");
 
     Ok(())
 }
