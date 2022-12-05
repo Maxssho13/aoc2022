@@ -1,14 +1,9 @@
-use nom::character::complete::digit1;
-use nom::combinator::map_res;
+use nom::character::complete::i32 as parse_i32;
 use nom::sequence::separated_pair;
 use nom::{character::complete::char, IResult};
 
 fn number_pair(input: &str) -> IResult<&str, (i32, i32)> {
-    separated_pair(
-        map_res(digit1, str::parse),
-        char('-'),
-        map_res(digit1, str::parse),
-    )(input)
+    separated_pair(parse_i32, char('-'), parse_i32)(input)
 }
 
 type NumPair = (i32, i32);
