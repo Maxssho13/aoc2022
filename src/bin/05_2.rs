@@ -3,16 +3,13 @@ use std::collections::VecDeque;
 
 use nom::bytes::complete::tag;
 use nom::character::complete::i32 as parse_i32;
+use nom::sequence::{delimited, separated_pair};
 use nom::{sequence::tuple, IResult};
 
-fn parse_line(input: &str) -> IResult<&str, (&str, i32, &str, i32, &str, i32)> {
+fn parse_line(input: &str) -> IResult<&str, (i32, (i32, i32))> {
     tuple((
-        tag("move "),
-        parse_i32,
-        tag(" from "),
-        parse_i32,
-        tag(" to "),
-        parse_i32,
+        delimited(tag("move "), parse_i32, tag(" from ")),
+        separated_pair(parse_i32, tag(" to "), parse_i32),
     ))(input)
 }
 
@@ -45,7 +42,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     for line in lines {
-        let (_, (_, count, _, from, _, to)) = parse_line(line).unwrap();
+        let (_, (count, (from, to))) = parse_line(line).unwrap();
         let from = (from - 1) as usize;
         let to = (to - 1) as usize;
 
